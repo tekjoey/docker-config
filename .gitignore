@@ -1,0 +1,11 @@
+**/.env
+backup/**/
+acme.json
+.log
+**/log/
+**/logs/
+**/__pycache__/*
+**/test.*
+**/ntfy/config/server.yml
+**/*.dist
+**/config/settings.*
