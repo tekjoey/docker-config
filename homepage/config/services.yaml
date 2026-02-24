@@ -1,0 +1,161 @@
+---
+# For configuration options and examples, please see:
+# https://gethomepage.dev/en/configs/services/
+# https://gethomepage.dev/en/configs/service-widgets/
+
+- Services:
+    - Nextcloud ☁️:
+        href: https://drive.mckay.one
+        description: Our own, personal, non-cloud, cloud.
+        icon: nextcloud
+        ping: https://drive.mckay.one
+    - Immich 📷:
+        href: https://photos.mckay.one
+        description: Self-hosted photo and video backup solution directly from your mobile phone.
+        icon: immich
+        ping: https://photos.mckay.one
+ #       widget:
+ #           type: immich
+ #           url: https://photos.mckay.one
+ #           key: asJ75897fIaBd2uG6CZ6XyyughDwkChC9pidmgx90Q
+ #           version: 2
+ #           fields: ['photos', 'videos', 'storage']
+    - Collectives 📖:
+        href: https://drive.mckay.one/apps/collectives/
+        description: "Documentation for all this madness"
+    - Mealie 🍽️:
+        href: https://cookbook.mckay.one
+        description: Cookbook, recipie saver, meal planer
+        icon: mealie
+        ping: https://cookbook.mckay.one
+  #      widget:
+  #        type: mealie
+  #        url: https://cookbook.mckay.one
+  #        key: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJsb25nX3Rva2VuIjp0cnVlLCJpZCI6IjEyZmJhN2NjLWYyNjUtNDdkYy1iY2NiLTYzZmZhZjkyZGJjOSIsIm5hbWUiOiJIb21lcGFnZSIsImludGVncmF0aW9uX2lkIjoiZ2VuZXJpYyIsImV4cCI6MTg4OTcxNjcxOH0.ivKAMrTKiao8lLPRV5VANo4rF1891zIEuS1QblETkUY"
+        #  version: 2
+  #        fields: ['recipes']
+    - Paperless-NGX 🗃️:
+        href: https://papers.mckay.one
+        description: Document management and archive
+        icon: paperless
+        ping: https://papers.mckay.one
+  #      widget:
+  #        type: paperlessngx
+  #        url: https://papers.mckay.one
+  #        username: paperless
+  #        password: s8LvKS8*GQp3Wuh
+    - Home Assistant 🤖:
+        href: https://hass.mckay.one
+        description: Our home automation platform
+        icon: home-assistant
+        ping: https://hass.mckay.one
+    - HomeBox 📦:
+        href: https://inventory.mckay.one
+        description: Asset Inventory
+        icon: homebox
+        ping: https://inventory.mckay.one
+  #      widget:
+  #        type: homebox
+  #        url: https://inventory.mckay.one
+  #        username: 21mjmckay@gmail.com
+  #        password: "MN3My!KsmY8KBvf&7"
+  #        fields: ['items', 'totalValue']
+    - Calibre-Web 📚:
+        href: https://books.mckay.one
+        description: E-book organizer and reader
+        icon: calibre-web
+ #   - MiniFlux 📰:
+ #       href: https://feed.mckay.one
+ #       description: RSS reader and aggregator
+ #       icon: miniflux
+    - LubeLogger 🚗:
+        href: https://cars.mckay.one
+        description: Car service management
+        icon: lubelogger
+    - NTFY 🔔:
+        href: https://ntfy.mckay.one
+        description: Powerful messaging platform
+        icon: ntfy
+    - Uptime :
+        href: https://up.mckay.one
+        description: Service Uptime dashboard
+        icon: sh-uptime-kuma
+- Hosts:
+    - TrueNAS:
+        href: https://truenas.mckay.one
+        icon: truenas
+        description: Storage Server
+    - Ambrose:
+        href: http://ambrose.mckay.one
+        icon: proxmox
+        description: Virtualization Hypervisor
+- Meta-Services:
+    - Authentik 🗝️:
+        href: https://auth.mckay.one
+        description: Authentication portal
+        icon: authentik
+        server: my-docker
+        container: authentik_server_1
+        ping: https://auth.mckay.one
+   #     widget:
+   #         type: authentik
+   #         url: https://10.10.0.2:9443
+   #         key: CGWkEpcRld33uirrx3s1vbTWBF0N852e1qeZDWywVxB1LwDrWYoVoDvH8mhNzJ9crlAjkjzXhn2K6ZUgL7eZJwaASUMKrFKNLiOKb1D6VToI1mGe1QiadBJCBNITN0D2
+   #         fields: ["loginsLast24H", "failedLoginsLast24H"]
+    - Traefik 🚦🛡️:
+        href: http://10.10.1.6:3001
+        description: Reverse Proxy dashboard
+        icon: traefik
+        server: my-docker
+        container: traefik
+   #     widget:
+   #         type: traefik
+   #         url: http://10.10.0.2:3001
+   #         # username: username
+            # password: password
+    - Origen2 Dozzel:
+        href: https://dozzle2.mckay.one
+        icon: sh-dozzle
+        description: Docker Logs
+#    - Code Server :
+#        href: http://100.74.183.1:2000/?folder=/workspace
+#        description: Remote code execution
+#        icon: code
+#        server: my-docker
+#        container: code-server
+#    - Scrutiny 🔎🛡️:
+#        href: http://10.10.0.2:2003
+#        description: S.M.A.R.T data collection
+#        icon: scrutiny
+#        server: my-docker
+#        container: scrutiny_web_1
+#        widget:
+#            type: scrutiny
+#            url: http://10.10.0.2:2003
+#            fields: ['passed', 'failed']
+    - Omada:
+        href: http://omada.mckay.one
+        description: TPLink Omada controller
+        icon: sh-omada
+    - S3-Console:
+        href: s3-console.mckay.one
+        description: Minio S3 Console
+        icon: sh-minio
+- Networking:
+    - OPNSense 🗺️:
+        href: router.mckay.one
+        description: Our router
+        icon: opnsense
+    - NS1:
+        href: https://ns1.dns.mckay.one
+        description: DNS server on Origin
+        icon: sh-technitium
+    - NS2:
+        href: https://ns2.dns.mckay.one
+        description: DNS server on Origin
+        icon: sh-technitium
+  #  - NS3:
+  #      href: http://10.10.0.3:5380
+  #      description: DNS Server on TrueNAS
+  #      icon: sh-technitium
+

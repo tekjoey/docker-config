@@ -1,0 +1,34 @@
+---
+services:
+  calibre-web:
+    container_name: calibre-web
+    image: lscr.io/linuxserver/calibre-web:latest
+    env_file: .env
+    volumes:
+      - config:/config
+      - data:/books
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.calibre.entrypoints=websecure"
+      - "traefik.http.routers.calibre.rule=Host(`books.mckay.one`)"
+      - "traefik.http.routers.calibre.tls=true"
+      - "traefik.http.routers.calibre.tls.certresolver=cf"
+    networks:
+      - proxy
+    restart: unless-stopped
+
+networks:
+  proxy:
+    external: true
+
+volumes:
+  config:
+    driver_opts:
+      type: nfs
+      o: addr=truenas.mckay.one,nfsvers=4,rw
+      device: ":/mnt/McPool/docker/calibre/config"
+  data:
+    driver_opts:
+      type: nfs
+      o: addr=truenas.mckay.one,nfsvers=4,rw
+      device: ":/mnt/McPool/docker/calibre/data"

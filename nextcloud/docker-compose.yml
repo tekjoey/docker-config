@@ -1,0 +1,46 @@
+---
+services:
+  app:
+    image: linuxserver/nextcloud:32.0.0
+    env_file: .env
+    volumes:
+      - config:/config
+      - data:/data
+    restart: unless-stopped
+    networks:
+      - proxy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.nextcloud.entrypoints=websecure"
+      - "traefik.http.routers.nextcloud.rule=Host(`drive.mckay.one`)"
+      - "traefik.http.routers.nextcloud.tls=true"
+      - "traefik.http.routers.nextcloud.tls.certresolver=cf"
+      - "traefik.http.services.nextcloud.loadbalancer.server.port=443"
+      - "traefik.http.services.nextcloud.loadbalancer.server.scheme=https"
+
+  db:
+    image: postgres
+    restart: always
+    env_file: .env
+    volumes:
+      - db:/var/lib/postgresql/data
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    external: true
+
+volumes:
+  db:
+  config:
+    driver_opts:
+      type: nfs
+      o: addr=truenas.mckay.one,nfsvers=4,rw
+      device: ":/mnt/McPool/nextcloud/config"
+  data:
+    driver_opts:
+     type: nfs
+     o: addr=truenas.mckay.one,nfsvers=4,rw
+     device: ":/mnt/McPool/nextcloud/data"
+

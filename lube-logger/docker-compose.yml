@@ -1,0 +1,42 @@
+---
+services:
+  ct-name:
+    container_name: lubelogger
+    image: ghcr.io/hargata/lubelogger:v1.5.6
+    #env_file: .env
+    #environment:
+    #  - envar=envar
+#    ports:
+#      - 8090:8080
+    volumes:
+      - config:/App/config
+      - data:/App/data
+      - translations:/App/wwwroot/translations
+      - documents:/App/wwwroot/documents
+      - images:/App/wwwroot/images
+      - temp:/App/wwwroot/temp
+      - log:/App/log
+      - keys:/root/.aspnet/DataProtection-Keys
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.lubelogger.entrypoints=websecure"
+      - "traefik.http.routers.lubelogger.rule=Host(`cars.mckay.one`)"
+      - "traefik.http.routers.lubelogger.tls=true"
+      - "traefik.http.routers.lubelogger.tls.certresolver=cf"
+    networks:
+      - proxy
+    restart: unless-stopped
+
+networks:
+  proxy:
+    external: true
+
+volumes:
+  config:
+  data:
+  translations:
+  documents:
+  images:
+  temp:
+  log:
+  keys:

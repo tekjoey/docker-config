@@ -1,0 +1,28 @@
+---
+services:
+  homebox:
+    container_name: homebox
+    image: ghcr.io/sysadminsmedia/homebox:0.15.2
+    env_file: .env
+    volumes:
+      - data:/data
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.homebox.entrypoints=websecure"
+      - "traefik.http.routers.homebox.rule=Host(`inventory.mckay.one`)"
+      - "traefik.http.routers.homebox.tls=true"
+      - "traefik.http.routers.homebox.tls.certresolver=cf"
+    networks:
+      - proxy
+    restart: unless-stopped
+
+networks:
+  proxy:
+    external: true
+
+volumes:
+  data:
+    driver_opts:
+      type: nfs
+      o: addr=truenas.mckay.one,nfsvers=4,rw
+      device: ":/mnt/McPool/docker/homebox/data"

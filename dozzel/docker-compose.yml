@@ -1,0 +1,21 @@
+services:
+  dozzle:
+    container_name: dozzle
+    image: docker.io/amir20/dozzle:latest
+#    ports:
+#      - 2001:8080
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.dozzel.entrypoints=websecure"
+      - "traefik.http.routers.dozzel.rule=Host(`dozzle2.mckay.one`)"
+      - "traefik.http.routers.dozzel.tls=true"
+      - "traefik.http.routers.dozzel.tls.certresolver=cf"
+    networks:
+      - proxy
+    restart: unless-stopped
+
+networks:
+  proxy:
+    external: true

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Sourdough Scheduler</title>
+  <style>
+    body { font-family: sans-serif; margin: 2em; }
+    .container { max-width: 400px; margin: auto; }
+    label { display: block; margin-top: 1em; }
+    input[type="number"], input[type="time"] { width: 100%; }
+    .result { margin-top: 1.5em; font-weight: bold; }
+    .mode-switch { margin-top: 1em; }
+    input[type="time"]::-webkit-datetime-edit-ampm-field {
+      display: none;
+  }
+
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1>Sourdough Scheduler</h1>
+  <div>
+    <label>
+      <input type="radio" name="mode" value="start" checked>
+      Know Start Time → Find Ready Time
+    </label>
+    <label>
+      <input type="radio" name="mode" value="ready">
+      Know Ready Time → Find Start Time
+    </label>
+  </div>
+
+  <form id="scheduler-form">
+    <div id="start-time-group">
+      <label for="start-time">Start Time:</label>
+      <input type="time" id="start-time" required>
+    </div>
+    <div id="ready-time-group" style="display:none;">
+      <label for="ready-time">Desired Ready Time:</label>
+      <input type="time" id="ready-time" >
+    </div>
+
+    <label for="num-steps">Number of Steps/Rises:</label>
+    <input type="number" id="num-steps" min="1" value="4" required>
+
+    <div id="steps-group">
+      <!-- Step time inputs will be inserted here -->
+    </div>
+
+    <button type="submit" style="margin-top:1em;">Calculate</button>
+  </form>
+  <div class="result" id="result"></div>
+</div>
+
+<script>
+function addStepInputs(n) {
+  const stepsGroup = document.getElementById('steps-group');
+  stepsGroup.innerHTML = '';
+  for (let i = 0; i < n; i++) {
+    const label = document.createElement('label');
+    label.textContent = `Step/Rise ${i+1} Duration (hours:minutes):`;
+    label.htmlFor = `step-${i}`;
+    const input = document.createElement('input');
+    input.type = 'time';
+    input.id = `step-${i}`;
+    input.required = true;
+    input.value = "01:00";
+    input.name = `step-${i}`
+    stepsGroup.appendChild(label);
+    stepsGroup.appendChild(input);
+  }
+}
+
+document.getElementById('num-steps').addEventListener('change', function() {
+  addStepInputs(Number(this.value));
+});
+
+// Initial setup for default value
+addStepInputs(Number(document.getElementById('num-steps').value));
+
+// Mode switching
+document.querySelectorAll('input[name="mode"]').forEach(radio => {
+  radio.addEventListener('change', function() {
+    if (this.value === "start") {
+      // Switch to Start Time
+      document.getElementById('start-time-group').style.display = ''; // show start time
+      document.getElementById('ready-time-group').style.display = 'none'; // hide ready time
+      document.getElementById('ready-time').removeAttribute('required'); // make ready time not required
+      document.getElementById('start-time').setAttribute('required') // make ready time required
+    } else {
+      // Switch to Ready Time
+      document.getElementById('start-time-group').style.display = 'none'; // hide start time
+      document.getElementById('ready-time-group').style.display = ''; // show ready time
+      document.getElementById('start-time').removeAttribute('required'); // make start time not required
+      document.getElementById('ready-time').setAttribute('required') // make ready time required
+    }
+    document.getElementById('result').textContent = '';
+  });
+});
+
+function parseTimeInput(timeStr) {
+  // "HH:MM"
+  const [h, m] = timeStr.split(':').map(Number);
+  return {h, m};
+}
+
+function addMinutes(date, minutes) {
+  let d = new Date(date.getTime());
+  d.setMinutes(d.getMinutes() + minutes);
+  return d;
+}
+
+function subtractMinutes(date, minutes) {
+  let d = new Date(date.getTime());
+  d.setMinutes(d.getMinutes() - minutes);
+  return d;
+}
+
+function formatTime(date) {
+  // Returns "HH:MM AM/PM"
+  return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+}
+
+document.getElementById('scheduler-form').addEventListener('submit', function(e) {
+  e.preventDefault();
+
+  const mode = document.querySelector('input[name="mode"]:checked').value;
+  const numSteps = Number(document.getElementById('num-steps').value);
+  let totalMinutes = 0;
+  for (let i = 0; i < numSteps; i++) {
+    const {h, m} = parseTimeInput(document.getElementById(`step-${i}`).value);
+    totalMinutes += h*60 + m;
+  }
+  let resultText = "";
+  if (mode === "start") {
+    // Get start time
+    const {h, m} = parseTimeInput(document.getElementById('start-time').value);
+    // Use today as base, time is local
+    const now = new Date();
+    const startTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), h, m, 0, 0);
+    const readyTime = addMinutes(startTime, totalMinutes);
+    resultText = `Your bread will be ready at <b>${formatTime(readyTime)}</b>.`;
+  } else {
+    // Get desired ready time
+    const {h, m} = parseTimeInput(document.getElementById('ready-time').value);
+    const now = new Date();
+    const readyTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), h, m, 0, 0);
+    const startTime = subtractMinutes(readyTime, totalMinutes);
+    resultText = `You should start at <b>${formatTime(startTime)}</b> to finish by ${formatTime(readyTime)}.`;
+  }
+  document.getElementById('result').innerHTML = resultText;
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,30 @@
+# Don't actually deploy this. This is just a template.
+
+services:
+  sourdough_scheduler:
+    container_name: sourdough_scheduler
+    image: httpd:latest
+    #env_file: .env
+    #environment:
+    #  - envar=envar
+    ports:
+      - 8097:80
+    volumes:
+      - ./html:/usr/local/apache2/htdocs
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.ct.entrypoints=websecure
+      - traefik.http.routers.ct.rule=Host(`dough.mckay.one`)
+      - traefik.http.routers.ct.tls=true
+      - traefik.http.routers.ct.tls.certresolver=cf
+    networks:
+      - proxy
+    restart: unless-stopped
+networks:
+  proxy:
+    external: true
+#volumes:
+#  named_volume: null
+#x-dockge:
+#  urls:
+#    - https://ct.mckay.one

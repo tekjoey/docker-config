@@ -1,0 +1,95 @@
+---
+# For configuration options and examples, please see:
+# https://gethomepage.dev/en/configs/bookmarks/
+
+- Bills:
+    - Truist (Mortgage):
+        - icon: mdi-home
+          abbr: TR
+          href: https://www.truist.com/
+          target: _blank
+    - Spectrum (Internet):
+        - icon: https://www.spectrum.net/favicon.ico
+          #icon: mdi-wifi
+          abbr: FU
+          href: https://www.spectrum.net/
+          target: _blank
+    - Columbia Water:
+        - icon: mdi-water
+          abbr: CW
+          href: https://cwa.columbiasc.gov/cwa/p_UWGPDYNA
+          target: _blank
+    - Dominion (Energy):
+        - icon: https://www.dominionenergy.com/dom-favicon.ico
+          #icon: mdi-home-lightning-bolt
+          abbr: DE
+          href: https://account.dominionenergysc.com/access/#login
+          target: _blank
+    - Sewage:
+        - icon: https://www.iwebms.net/Content/Images/serviceicon.ico
+          #icon: mdi-pipe
+          abbr: SW
+          href: https://www.iwebms.net/ercpsd
+          target: _blank
+    - RAV4 Loan:
+        - abbr: HB
+          href: https://www.huntington.com
+          target: _blank
+
+- Health:
+    - Humana Military (Health):
+        - icon: mdi-doctor
+          abbr: HM
+          href: https://www.humanamilitary.com/log-in
+    - United Concordia (Dental):
+        - icon: mdi-tooth
+          abbr: UC
+          href: https://www.uccitdp.com/dtwdws/member/article.xhtml?content=member-my-account-info
+    - milConnect:
+        - icon: https://milconnect.dmdc.osd.mil/milconnect/favicon.ico
+          abbr: MC
+          href: https://milconnect.dmdc.osd.mil/milconnect/
+
+- Finance:
+  - Monarch Money:
+      - icon: https://www.monarchmoney.com/favicon.svg
+        abbr: MM
+        href: https://www.monarchmoney.com/
+  - Ally Bank:
+      - icon: https://www.ally.com/content/dam/assets/ally-assets/global/favicon/ally-logo-favicon.ico
+        abbr: AB
+        href: https://www.ally.com/
+  - Chase Bank:
+      - icon: https://www.chase.com/etc/designs/chase-ux/favicon.ico
+        abbr: CB
+        href: https://www.chase.com
+  - Discover:
+      - icon: https://www.discover.com/etc.clientlibs/dfs-cards-portfolio/clientlibs/clientlib-dependency/resources/images/favicon.ico
+        abbr: DC
+        href: https://www.discover.com/
+  - Bank of America:
+      - icon: https://www.bankofamerica.com/content/images/ContextualSiteGraphics/Logos/en_US/logos/colored_flagscape-v2.png
+        abbr: BA
+        href: https://www.bankofamerica.com/
+  - Primerica:
+      - abbr: PR
+        href: https://my.accessportals.com/app/ai2/login
+  - Charles Schwab:
+      - abbr: CS
+        href: https://www.schwab.com/client-home
+        icon: https://www.schwab.com/themes/custom/sch_retail/favicon.ico
+  - Thrift Savings Plan:
+      - abbr: TS
+        href: https://www.tsp.gov/
+        icon: https://www.tsp.gov/assets/img/favicons/favicon.ico
+  - USAA:
+      - abbr: US
+        href: https://www.usaa.com/
+  - MilTax:
+      - icon: https://www.militaryonesource.mil/wp-content/themes/mos-core/assets/images/favicons/android-chrome-512x512.png
+        abbr: MT
+        href: https://www.militaryonesource.mil/financial-legal/taxes/miltax-military-tax-services/
+
+
+
+

@@ -1,0 +1,99 @@
+services:
+  broker:
+    container_name: paperless_broker
+    image: docker.io/library/redis:7
+    volumes:
+      - redisdata:/data
+    networks:
+      - proxy
+    restart: unless-stopped
+
+  db:
+    container_name: paperless_db
+    image: docker.io/library/postgres:16
+    environment:
+      POSTGRES_DB: paperless
+      POSTGRES_USER: paperless
+      POSTGRES_PASSWORD: paperless
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - proxy
+    restart: unless-stopped
+
+  webserver:
+    container_name: paperless_server
+    image: ghcr.io/paperless-ngx/paperless-ngx:2.16.2
+    env_file: .env
+    volumes:
+      - data:/usr/src/paperless/data
+      - media:/usr/src/paperless/media
+      - trash:/usr/src/paperless/trash
+      - consume:/usr/src/paperless/consume
+      - export:/usr/src/paperless/export
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.paperless.entrypoints=websecure"
+      - "traefik.http.routers.paperless.rule=Host(`papers.mckay.one`)"
+      - "traefik.http.routers.paperless.tls.certresolver=cf"
+    networks:
+      - proxy
+    restart: unless-stopped
+    depends_on:
+      - db
+      - broker
+      - gotenberg
+      - tika
+
+  gotenberg:
+    container_name: paperless_gotenberg
+    image: docker.io/gotenberg/gotenberg:8.7
+    networks:
+      - proxy
+    restart: unless-stopped
+    # The gotenberg chromium route is used to convert .eml files. We do not
+    # want to allow external content like tracking pixels or even javascript.
+    command:
+      - "gotenberg"
+      - "--chromium-disable-javascript=true"
+      - "--chromium-allow-list=file:///tmp/.*"
+
+  tika:
+    container_name: paperless_tika
+    image: docker.io/apache/tika:2.9.2.0
+    networks:
+      - proxy
+    restart: unless-stopped
+
+networks:
+  proxy:
+    external: true
+
+volumes:
+  data:
+    driver_opts:
+      type: nfs
+      o: addr=truenas.mckay.one,nfsvers=4,rw
+      device: ":/mnt/McPool/docker/paperless-ngx/data"
+  media:
+    driver_opts:
+      type: nfs
+      o: addr=truenas.mckay.one,nfsvers=4,rw
+      device: ":/mnt/McPool/docker/paperless-ngx/media"
+  trash:
+    driver_opts:
+      type: nfs
+      o: addr=truenas.mckay.one,nfsvers=4,rw
+      device: ":/mnt/McPool/docker/paperless-ngx/trash"
+  consume:
+    driver_opts:
+      type: nfs
+      o: addr=truenas.mckay.one,nfsvers=4,rw
+      device: ":/mnt/McPool/docker/paperless-ngx/consume"
+  export:
+    driver_opts:
+      type: nfs
+      o: addr=truenas.mckay.one,nfsvers=4,rw
+      device: ":/mnt/McPool/docker/paperless-ngx/export"
+  pgdata:
+  redisdata:

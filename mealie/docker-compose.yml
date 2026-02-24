@@ -1,0 +1,27 @@
+---
+services:
+  app:
+    image: ghcr.io/mealie-recipes/mealie:v3.8.0
+    env_file: .env
+    volumes:
+      - data:/app/data
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.mealie.entrypoints=websecure"
+      - "traefik.http.routers.mealie.rule=Host(`cookbook.mckay.one`)"
+      - "traefik.http.routers.mealie.tls=true"
+      - "traefik.http.routers.mealie.tls.certresolver=cf"
+    networks:
+      - proxy
+    restart: unless-stopped
+
+networks:
+  proxy:
+    external: true
+
+volumes:
+  data:
+    driver_opts:
+      type: nfs
+      o: addr=truenas.mckay.one,nfsvers=4,rw
+      device: ":/mnt/McPool/docker/mealie/data"
