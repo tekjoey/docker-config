@@ -37,10 +37,10 @@ volumes:
     driver_opts:
       type: nfs
       o: addr=truenas.mckay.one,nfsvers=4,rw
-      device: ":/mnt/McPool/nextcloud/config"
+      device: ":/mnt/McPool/docker/nextcloud/config"
   data:
     driver_opts:
      type: nfs
      o: addr=truenas.mckay.one,nfsvers=4,rw
-     device: ":/mnt/McPool/nextcloud/data"
+     device: ":/mnt/McPool/docker/nextcloud/data"
 

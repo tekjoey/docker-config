@@ -11,7 +11,7 @@ sys.path.append('/docker/backup')
 import backup_utils as bu
 
 file_root = "/docker/nextcloud/"
-backup_root = "/docker/backup/nextcloud/"
+backup_root = "nextcloud/"
 
 
 ## Backup Database

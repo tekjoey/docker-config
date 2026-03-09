@@ -11,15 +11,15 @@ sys.path.append('/docker/backup')
 import backup_utils as bu
 
 file_root = "/docker/paperless-ngx/"
-backup_root = "/docker/backup/paperless-ngx/"
+backup_dir = "paperless-ngx/"
 
 ## Backup Database
 cmd = ["docker", "exec", "paperless_db", "pg_dump", "-U", "paperless", "paperless"]
 
-bu.db_backup(cmd, backup_root)
+bu.db_backup(cmd, backup_dir)
 
 # Delete old files
-bu.delete_older(backup_root)
+bu.delete_older(backup_dir)
 
 # Encrypt .env file
 env_file = f"{file_root}.env"

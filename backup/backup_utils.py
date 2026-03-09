@@ -3,9 +3,10 @@ from datetime import date, timedelta, datetime
 
 now = datetime.now()
 date_format = now.strftime('%Y-%m-%d_%H-%M')
+backup_root = "/docker/backup/ct_backups/"
 
-def db_backup(cmd, output_dir):
-    outputfile = f"{output_dir}{date_format}.sql"
+def db_backup(cmd, output_dir, root=backup_root):
+    outputfile = f"{root}{output_dir}{date_format}.sql"
 
     with open(outputfile, "w") as file:
         db_result = subprocess.run(cmd, stdout=file)
@@ -15,12 +16,13 @@ def db_backup(cmd, output_dir):
     else:
         print("Error in backup. Try again")
 
-def delete_older(backup_root, days=30):
+def delete_older(backup_dir, days=30, root=backup_root):
+    backup_path = root + backup_dir
     cutoff_time = (now - timedelta(days=days)).timestamp()
-    file_list = os.listdir(path=backup_root)
+    file_list = os.listdir(path=backup_path)
     removed_any = False
     for backup in file_list:
-        path = backup_root + backup
+        path = backup_path + backup
         if os.path.getctime(path) < cutoff_time:
             os.remove(path)
             removed_any = True
@@ -38,11 +40,11 @@ def encrypt_file(plain_path, encrypted_path):
         enc_result = subprocess.run(enc_cmd, stdout=file)
 
     if enc_result.returncode == 0:
-        print(f"{plain_path} Encryption Successfull!")
+        print(f"{plain_path} encryption successfull!")
     else:
-        print("Error in .env Encryption. Try again")
+        print("Error in encryption. Try again")
 
-def write_dated_file(content, filepath, extention, mode='w', prefix=''):
-    with open(f'{filepath}{prefix}{date_format}.{extention}', mode) as dated_file:
+def write_dated_file(content, output_path, extention, mode='w', prefix='', root=backup_root):
+    with open(f'{root}{output_path}{prefix}{date_format}.{extention}', mode) as dated_file:
         dated_file.write(content)
-        print("write finished")
+        print("Write finished")

@@ -12,7 +12,7 @@ sys.path.append('/docker/backup')
 import backup_utils as bu
 
 file_root = "/docker/lube-logger/"
-backup_root = "/docker/backup/lube-logger/"
+backup_root = "lube-logger/"
 
 # Encrypt .env file
 env_file = f"{file_root}.env"
