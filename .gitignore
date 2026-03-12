@@ -1,5 +1,5 @@
 **/.env
-backup/**/
+infra/ct_backu*/**/
 acme.json
 .log
 **/log/

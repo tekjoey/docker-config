@@ -7,7 +7,7 @@
 # If the extra media/certificat folders are ever used, they will also have to be backed up.
 
 import sys
-sys.path.append('/docker/backup')
+sys.path.append('/docker/infra')
 import backup_utils as bu
 
 file_root = "/docker/authentik/"

@@ -1,0 +1,8 @@
+[Unit]
+Description=Timer unit for docker-backup unit. Periodically backup Docker containers
+
+[Timer]
+OnCalendar=*-*-* 0:0:0
+
+[Install]
+WantedBy=timers.target

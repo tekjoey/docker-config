@@ -3,7 +3,7 @@ from datetime import date, timedelta, datetime
 
 now = datetime.now()
 date_format = now.strftime('%Y-%m-%d_%H-%M')
-backup_root = "/docker/backup/ct_backups/"
+backup_root = "/docker/infra/ct_backups/"
 
 def db_backup(cmd, output_dir, root=backup_root):
     outputfile = f"{root}{output_dir}{date_format}.sql"

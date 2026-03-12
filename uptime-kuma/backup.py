@@ -7,7 +7,7 @@
 # No .env file to back up
 
 import sys
-sys.path.append('/docker/backup')
+sys.path.append('/docker/infra')
 import backup_utils as bu
 
 file_root = "/docker/uptime-kuma/"

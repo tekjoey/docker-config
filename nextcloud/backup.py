@@ -7,7 +7,7 @@
 # The `data` and `config` volumes need to be handled as well.
 
 import sys
-sys.path.append('/docker/backup')
+sys.path.append('/docker/infra')
 import backup_utils as bu
 
 file_root = "/docker/nextcloud/"
