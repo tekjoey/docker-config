@@ -9,6 +9,7 @@ services:
     restart: unless-stopped
     networks:
       - proxy
+      - nextcloud
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.nextcloud.entrypoints=websecure"
@@ -17,6 +18,7 @@ services:
       - "traefik.http.routers.nextcloud.tls.certresolver=cf"
       - "traefik.http.services.nextcloud.loadbalancer.server.port=443"
       - "traefik.http.services.nextcloud.loadbalancer.server.scheme=https"
+      - "traefik.docker.network=proxy"
 
   db:
     image: postgres
@@ -25,11 +27,14 @@ services:
     volumes:
       - db:/var/lib/postgresql/data
     networks:
-      - proxy
+      - nextcloud
 
 networks:
   proxy:
     external: true
+  nextcloud:
+    external: true
+
 
 volumes:
   db:

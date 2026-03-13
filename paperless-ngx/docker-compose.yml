@@ -5,7 +5,7 @@ services:
     volumes:
       - redisdata:/data
     networks:
-      - proxy
+      - paperless
     restart: unless-stopped
 
   db:
@@ -18,7 +18,7 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
     networks:
-      - proxy
+      - paperless
     restart: unless-stopped
 
   webserver:
@@ -36,8 +36,10 @@ services:
       - "traefik.http.routers.paperless.entrypoints=websecure"
       - "traefik.http.routers.paperless.rule=Host(`papers.mckay.one`)"
       - "traefik.http.routers.paperless.tls.certresolver=cf"
+      - "traefik.docker.network=proxy"
     networks:
       - proxy
+      - paperless
     restart: unless-stopped
     depends_on:
       - db
@@ -49,7 +51,7 @@ services:
     container_name: paperless_gotenberg
     image: docker.io/gotenberg/gotenberg:8.7
     networks:
-      - proxy
+      - paperless
     restart: unless-stopped
     # The gotenberg chromium route is used to convert .eml files. We do not
     # want to allow external content like tracking pixels or even javascript.
@@ -62,12 +64,15 @@ services:
     container_name: paperless_tika
     image: docker.io/apache/tika:2.9.2.0
     networks:
-      - proxy
+      - paperless
     restart: unless-stopped
 
 networks:
   proxy:
     external: true
+  paperless:
+    external: true
+
 
 volumes:
   data:

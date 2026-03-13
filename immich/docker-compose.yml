@@ -23,7 +23,7 @@ services:
       - "traefik.http.routers.photos.tls=true"
       - "traefik.http.routers.photos.tls.certresolver=cf"
     networks:
-      - default
+      - immich
       - proxy
 
   immich-machine-learning:
@@ -34,12 +34,16 @@ services:
     env_file:
       - .env
     restart: always
+    networks:
+      - immich
 
   redis:
     container_name: immich_redis
     image: redis:6.2-alpine@sha256:80cc8518800438c684a53ed829c621c94afd1087aaeb59b0d4343ed3e7bcf6c5
     restart: always
     # needs volume for /data
+    networks:
+      - immich
 
   database:
     container_name: immich_postgres
@@ -54,6 +58,8 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
     restart: always
+    networks:
+      - immich
 
 volumes:
   pgdata:
@@ -66,4 +72,6 @@ volumes:
 
 networks:
   proxy:
+    external: true
+  immich:
     external: true

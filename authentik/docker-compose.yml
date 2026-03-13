@@ -19,7 +19,7 @@ services:
     env_file:
       - .env
     networks:
-      - proxy
+      - auth
 
   redis:
     image: docker.io/library/redis:alpine
@@ -34,7 +34,7 @@ services:
     volumes:
       - redis:/data
     networks:
-      - proxy
+      - auth
 
   server:
     image: ${AUTHENTIK_IMAGE:-ghcr.io/goauthentik/server}:${AUTHENTIK_TAG:-2024.6.0}
@@ -59,12 +59,14 @@ services:
       - redis
     networks:
       - proxy
+      - auth
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.auth.entrypoints=websecure"
       - "traefik.http.routers.auth.rule=Host(`auth.mckay.one`) || HostRegexp(`{subdomain:[a-z0-9]+}.mckay.one`) && PathPrefix(`/outpost.goauthentik.io/`)"
       - "traefik.http.routers.auth.tls=true"
       - "traefik.http.routers.auth.tls.certresolver=cf"
+      - "traefik.docker.network=proxy"
 
   worker:
     image: ${AUTHENTIK_IMAGE:-ghcr.io/goauthentik/server}:${AUTHENTIK_TAG:-2024.6.0}
@@ -94,7 +96,7 @@ services:
       - postgresql
       - redis
     networks:
-      - proxy
+      - auth
 
 
 volumes:
@@ -105,4 +107,6 @@ volumes:
 
 networks:
   proxy:
+    external: true
+  auth:
     external: true
