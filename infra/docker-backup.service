@@ -5,7 +5,7 @@ Description=Backup all Docker containers
 [Service]
 Type=oneshot
 #ExecStart=/bin/bash -c "curl -d 'Docker backup started by systemd' https://ntfy.mckay.one/docker-backup-script"
-ExecStart=/docker/infra/script.sh
+ExecStart=/docker/infra/backup-script.sh
 User=tekjoey
 Group=tekjoey
 
