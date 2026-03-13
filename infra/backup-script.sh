@@ -20,6 +20,7 @@ SECONDS=0
 /docker/paperless-ngx/backup.py
 /docker/traefik/backup.py
 /docker/uptime-kuma/backup.py
+/docker/vikunja/backup.py
 
 curl -d "Backup Complete! Backup took $SECONDS seconds" https://ntfy.mckay.one/docker-backup-script
 

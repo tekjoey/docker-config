@@ -1,0 +1,47 @@
+services:
+  vikunja:
+    container_name: vikunja_server
+    image: vikunja/vikunja:2.1.0
+    env_file: .env
+    volumes:
+      - files:/app/vikunja/files
+    depends_on:
+      db:
+        condition: service_healthy
+    restart: unless-stopped
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.vikunja.rule=Host(`tasks.mckay.one`)"
+      - "traefik.http.routers.vikunja.entrypoints=websecure"
+      - "traefik.http.routers.vikunja.tls.certresolver=cf"
+      - "traefik.http.services.vikunja.loadbalancer.server.port=3456"
+      - "traefik.docker.network=proxy"
+    networks:
+      - proxy
+      - vikunja
+  db:
+    container_name: vikunja_db
+    image: postgres:18
+    env_file: .env
+    volumes:
+      - db:/var/lib/postgresql
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -h localhost -U $$POSTGRES_USER"]
+      interval: 2s
+      start_period: 30s
+    networks:
+      - vikunja
+volumes:
+  db:
+  files:
+    driver_opts:
+      type: nfs
+      o: addr=truenas.mckay.one,nfsvers=4,rw
+      device: ":/mnt/McPool/docker/vikunja/files"
+
+networks:
+  vikunja:
+    external: true
+  proxy:
+    external: true
