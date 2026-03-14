@@ -5,6 +5,14 @@ now = datetime.now()
 date_format = now.strftime('%Y-%m-%d_%H-%M')
 backup_root = "/docker/infra/ct_backups/"
 
+def log(level, message):
+  print(f"{date_format} - {level}: {message}\n")
+  with open(f"{backup_root}backups.log", "a") as logfile:
+    logfile.write(f"{date_format} - {level}: {message}\n")
+
+
+#log("INFO", "This is a test of the logging system")
+
 def db_backup(cmd, output_dir, root=backup_root):
     outputfile = f"{root}{output_dir}{date_format}.sql"
 
@@ -12,9 +20,9 @@ def db_backup(cmd, output_dir, root=backup_root):
         db_result = subprocess.run(cmd, stdout=file)
 
     if db_result.returncode == 0:
-        print("DB Backup Successfull!")
+        log("SUCCESS", f"{output_dir} DB was backup up successfully")
     else:
-        print("Error in backup. Try again")
+        log("FAILURE", f"{output_dir} DB failed to backup")
 
 def delete_older(backup_dir, days=30, root=backup_root):
     backup_path = root + backup_dir
@@ -26,9 +34,9 @@ def delete_older(backup_dir, days=30, root=backup_root):
         if os.path.getctime(path) < cutoff_time:
             os.remove(path)
             removed_any = True
-            print(f"Removed {path}")
+            log("INFO", f"{backup_dir}: Removed {path}")
     if not removed_any:
-        print("No files deleted")
+        log("INFO", f"{backup_dir}: No files deleted")
 
 def encrypt_file(plain_path, encrypted_path):
 # plain_path is the absolute path of the file to be encrypted.
@@ -40,11 +48,13 @@ def encrypt_file(plain_path, encrypted_path):
         enc_result = subprocess.run(enc_cmd, stdout=file)
 
     if enc_result.returncode == 0:
-        print(f"{plain_path} encryption successfull!")
+        log("SUCCESS", f"Encrypted {plain_path}")
     else:
-        print("Error in encryption. Try again")
+        log("FAILURE" f"Unable to encrypt {plain_path}")
 
 def write_dated_file(content, output_path, extention, mode='w', prefix='', root=backup_root):
     with open(f'{root}{output_path}{prefix}{date_format}.{extention}', mode) as dated_file:
         dated_file.write(content)
-        print("Write finished")
+        log("INFO", f"Finished writing {dated_file.name}")
+
+#write_dated_file("This is a test", "test", "txt")

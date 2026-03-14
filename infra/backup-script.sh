@@ -1,5 +1,9 @@
 #!/bin/bash
 
+ntfy_topic="https://ntfy.mckay.one/docker-backup-script"
+backup_root="/docker/infra/ct_backups"
+
+
 #curl -d "Beginning Docker backup" https://ntfy.mckay.one/docker-backup-script
 SECONDS=0
 
@@ -22,5 +26,13 @@ SECONDS=0
 /docker/uptime-kuma/backup.py
 /docker/vikunja/backup.py
 
-curl -d "Backup Complete! Backup took $SECONDS seconds" https://ntfy.mckay.one/docker-backup-script
-
+logfile=`cat $backup_root/backups.log`
+if [[ $logfile == *ERROR* ]]; then
+  curl -H "Title: Error in backup" -H "Tags: rotating_light" -d "Docker backup has completed, but an error was found. Check the log file for more details. Backup took $SECONDS seconds." $ntfy_topic
+else
+  curl -H "Title: Backup Successfull" -H "Tags: tada" -d "Docker backup complete. Backup took $SECONDS seconds" $ntfy_topic
+  # If no errors are found we can archive the current logfile.
+  echo "" >> $backup_root/backup-archive.log && echo "-----$(date)-----" >> $backup_root/backup-archive.log
+  cat $backup_root/backups.log >> $backup_root/backup-archive.log
+  echo "" > $backup_root/backups.log
+fi
