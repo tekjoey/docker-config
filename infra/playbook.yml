@@ -1,0 +1,43 @@
+---
+- name: Create Docker Networks
+  hosts: all
+  tasks:
+#  - name: ping
+#    ansible.builtin.ping:
+
+  - name: Create proxy network
+    community.docker.docker_network:
+      name: proxy
+
+  - name: Create authentik network
+    community.docker.docker_network:
+      name: auth
+
+  - name: Create immich network
+    community.docker.docker_network:
+      name: immich
+
+  - name: Create nextcloud network
+    community.docker.docker_network:
+      name: nextcloud
+
+  - name: Create paperless-ngx network
+    community.docker.docker_network:
+      name: paperless
+
+  - name: Create vikunja network
+    community.docker.docker_network:
+      name: vikunja
+
+  - name: Create navidrome network
+    community.docker.docker_network:
+      name: navidrome
+
+- name: Add infra to PYTHONPATH
+  hosts: all
+  tasks:
+    - name: edit bashrc file
+      ansible.builtin.blockinfile:
+        path: ~/.bashrc
+        block: |
+          export PYTHONPATH="${PYTHONPATH}:/docker/infra"
