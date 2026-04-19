@@ -10,20 +10,19 @@ def run():
     import backup_utils as bu
 
     file_root = "/docker/paperless-ngx/"
-    backup_dir = "paperless-ngx/"
-
+    ct = "Paperless-NGX
     ## Backup Database
     cmd = ["docker", "exec", "paperless_db", "pg_dump", "-U", "paperless", "paperless"]
 
-    bu.db_backup(cmd, backup_dir)
+    bu.db_backup(cmd, ct)
 
     # Delete old files
-    bu.delete_older(backup_dir)
+    bu.delete_older(ct)
 
     # Encrypt .env file
     env_file = f"{file_root}.env"
     enc_file = f"{file_root}encrypted.env"
 
-    bu.encrypt_file(env_file, enc_file)
+    bu.encrypt_file(env_file, enc_file, ct=ct)
 
 run()

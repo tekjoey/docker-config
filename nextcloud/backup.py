@@ -16,7 +16,7 @@ def run():
     ## Backup Database
     cmd = ["docker", "exec", "nextcloud-db-1", "pg_dump", "-U", "nextcloud", "nextcloud"]
 
-    bu.db_backup(cmd, backup_root)
+    bu.db_backup(cmd, "Nextcloud")
 
     # Delete old files
     bu.delete_older(backup_root)

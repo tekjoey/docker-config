@@ -47,7 +47,7 @@ def notify(level, message, headers={"Tags": "loudspeaker"}):
 
 
 def db_backup(cmd, ct, root=backup_root):
-    outputfile = f"{root}{ct.lower()}{date_format}.sql"
+    outputfile = f"{root}{ct.lower()}/{date_format}.sql"
 
     with open(outputfile, "w") as file:
         db_result = subprocess.run(cmd, stdout=file)

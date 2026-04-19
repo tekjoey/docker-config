@@ -9,21 +9,21 @@ def run():
   import backup_utils as bu
 
   file_root = "/docker/authentik/"
-  backup_dir = "authentik/"
+  ct = "Authentik"
 
   ## Backup Database
   cmd = ["docker", "exec", "authentik-postgresql-1", "pg_dump", "-U", "authentik", "authentik"]
 
-  bu.db_backup(cmd, "Authentik")
+  bu.db_backup(cmd, ct)
 
 
   # Delete old files
-  bu.delete_older(backup_dir)
+  bu.delete_older(ct)
 
   # Encrypt .env file
   env_file = f"{file_root}.env"
   enc_file = f"{file_root}encrypted.env"
 
-  bu.encrypt_file(env_file, enc_file)
+  bu.encrypt_file(env_file, enc_file, ct=ct)
 
 run()

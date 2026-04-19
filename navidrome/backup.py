@@ -8,7 +8,7 @@ def run():
 
     file_root = "/docker/navidrome/"
     backup_path = "/docker/infra/ct_backups/navidrome/"
-
+    ct = "Navidrome"
 
     ## Backup Database
     cmd_backup = ["docker", "compose", "-f", f"{file_root}docker-compose.yml", "run" , "-d", "-q", "--remove-orphans", "navidrome", "backup", "create"]
@@ -26,8 +26,8 @@ def run():
     conf_file = f"{file_root}navidrome.yml"
     enc_conf_file = f"{file_root}encrypted-navidrome.yml"
 
-    bu.encrypt_file(env_file, enc_file)
-    bu.encrypt_file(conf_file, enc_conf_file)
+    bu.encrypt_file(env_file, enc_file, ct=ct)
+    bu.encrypt_file(conf_file, enc_conf_file, ct=ct)
 
 
 run()

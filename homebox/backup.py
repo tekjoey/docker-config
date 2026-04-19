@@ -6,13 +6,13 @@
 # This container has all content stored in volumes. No database to backup.
 def run():
     import backup_utils as bu
-
+    ct = "Homebox"
     file_root = "/docker/homebox/"
 
     # Encrypt .env file
     env_file = f"{file_root}.env"
     enc_file = f"{file_root}encrypted.env"
 
-    bu.encrypt_file(env_file, enc_file)
+    bu.encrypt_file(env_file, enc_file, ct=ct)
 
 run()

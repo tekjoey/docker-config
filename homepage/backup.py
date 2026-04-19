@@ -8,7 +8,7 @@ def run():
     import backup_utils as bu
 
     file_root = "/docker/homepage/"
-
+    ct = "Homepage"
     # Encrypt .env & settings file
     env_file = f"{file_root}.env"
     enc_file = f"{file_root}encrypted.env"
@@ -17,7 +17,7 @@ def run():
     enc_settings_file = f"{file_root}config/encrypted_settings.yaml"
 
 
-    bu.encrypt_file(env_file, enc_file)
-    bu.encrypt_file(settings_file, enc_settings_file)
+    bu.encrypt_file(env_file, enc_file, ct=ct)
+    bu.encrypt_file(settings_file, enc_settings_file, ct=ct)
 
 run()

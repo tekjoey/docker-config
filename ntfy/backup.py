@@ -9,7 +9,7 @@ def run():
     import backup_utils as bu
 
     file_root = "/docker/ntfy/"
-
+    ct = "NTFY"
     # Encrypt .env file
     env_file = f"{file_root}.env"
     enc_file = f"{file_root}encrypted.env"
@@ -18,6 +18,6 @@ def run():
     # Encrypt server.yaml file
     env_file = f"{file_root}config/server.yml"
     enc_file = f"{file_root}config/encrypted-server.yml"
-    bu.encrypt_file(env_file, enc_file)
+    bu.encrypt_file(env_file, enc_file, ct=ct)
 
 run()

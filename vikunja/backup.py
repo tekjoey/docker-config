@@ -10,21 +10,21 @@ def run():
 
     file_root = "/docker/vikunja/"
     backup_root = "vikunja/"
-
+    ct = "Vikunja"
 
     ## Backup Database
     cmd = ["docker", "exec", "vikunja_db", "pg_dump", "-U", "vikunja", "vikunja"]
 
-    bu.db_backup(cmd, backup_root)
+    bu.db_backup(cmd, ct)
 
     # Delete old files
-    bu.delete_older(backup_root)
+    bu.delete_older(ct)
 
 
     # Encrypt .env file
     env_file = f"{file_root}.env"
     enc_file = f"{file_root}encrypted.env"
 
-    bu.encrypt_file(env_file, enc_file)
+    bu.encrypt_file(env_file, enc_file, ct=ct)
 
 run()
