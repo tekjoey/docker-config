@@ -5,8 +5,6 @@
 
 # This container has all content stored in volumes. No database to backup.
 def run():
-    import sys
-    sys.path.append('/docker/infra')
     import backup_utils as bu
 
     file_root = "/docker/homepage/"

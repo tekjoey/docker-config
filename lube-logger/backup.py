@@ -7,8 +7,7 @@
 # provides an api to backup /api/makebackup
 
 def run():
-    import sys, requests
-    sys.path.append('/docker/infra')
+    import requests
     import backup_utils as bu
 
     file_root = "/docker/lube-logger/"

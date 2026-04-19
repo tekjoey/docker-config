@@ -6,8 +6,6 @@
 # This script curently will only backup the database.
 
 def run():
-    import sys
-    sys.path.append('/docker/infra')
     import backup_utils as bu
 
     file_root = "/docker/vikunja/"

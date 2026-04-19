@@ -6,9 +6,6 @@
 # The database is the only thing that needs to be backed up at this time.
 # If the extra media/certificat folders are ever used, they will also have to be backed up.
 def run():
-
-  import sys
-  sys.path.append('/docker/infra')
   import backup_utils as bu
 
   file_root = "/docker/authentik/"

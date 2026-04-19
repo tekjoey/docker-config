@@ -3,8 +3,7 @@
 # Purpose: Create a backup for Navidrome
 # Author & Copywright: Josiah McKay / 2026
 def run():
-    import sys, subprocess
-    sys.path.append('/docker/infra')
+    import subprocess
     import backup_utils as bu
 
     file_root = "/docker/navidrome/"

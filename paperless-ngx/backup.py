@@ -7,8 +7,6 @@
 # All the other volumes still need to be backed up
 
 def run():
-    import sys
-    sys.path.append('/docker/infra')
     import backup_utils as bu
 
     file_root = "/docker/paperless-ngx/"
