@@ -20,12 +20,15 @@ def run():
     subprocess.run(cmd_prune)
     subprocess.run(cmd_dk_cp)
 
-
     # Encrypt .env file
     env_file = f"{file_root}.env"
     enc_file = f"{file_root}encrypted.env"
 
+    conf_file = f"{file_root}navidrome.yml"
+    enc_conf_file = f"{file_root}encrypted-navidrome.yml"
+
     bu.encrypt_file(env_file, enc_file)
+    bu.encrypt_file(conf_file, enc_conf_file)
 
 
 run()

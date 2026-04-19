@@ -1,0 +1,72 @@
+services:
+  navidrome:
+    image: deluan/navidrome:latest
+    user: 1000:1000 # should be owner of volumes
+    restart: unless-stopped
+    env_file: .env
+    volumes:
+      - "data:/data"
+      - "music:/music:ro"
+      - "./navidrome.yml:/data/navidrome.yml"
+    networks:
+      - navidrome
+      - proxy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.navidrome.entrypoints=websecure"
+      - "traefik.http.routers.navidrome.rule=Host(`music-server.mckay.one`)"
+      - "traefik.http.routers.navidrome.tls=true"
+      - "traefik.http.routers.navidrome.tls.certresolver=cf"
+      - "traefik.http.services.navidrome.loadbalancer.server.port=4533"
+      - "traefik.docker.network=proxy"
+
+  feishin:
+    container_name: feishin
+    image: 'ghcr.io/jeffvli/feishin:latest'
+    restart: unless-stopped
+    env_file: .env
+    networks:
+      - proxy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.feishin.entrypoints=websecure"
+      - "traefik.http.routers.feishin.rule=Host(`music.mckay.one`)"
+      - "traefik.http.routers.feishin.tls=true"
+      - "traefik.http.routers.feishin.tls.certresolver=cf"
+      - "traefik.http.services.feishin.loadbalancer.server.port=9180"
+      - "traefik.docker.network=proxy"
+
+  maloja:
+    image: "krateng/maloja:latest"
+    ports:
+      - "42010:42010"
+    volumes:
+      - "maloja-data:/data"
+    env_file: .env
+    networks:
+      - proxy
+      - navidrome
+
+
+networks:
+  proxy:
+    external: true
+  navidrome:
+    external: true
+
+volumes:
+  music:
+    driver_opts:
+      type: nfs
+      o: addr=truenas.mckay.one,nfsvers=4,rw
+      device: ":/mnt/McPool/docker/navidrome/music"
+  data:
+    driver_opts:
+     type: nfs
+     o: addr=truenas.mckay.one,nfsvers=4,rw
+     device: ":/mnt/McPool/docker/navidrome/data"
+  maloja-data:
+    driver_opts:
+     type: nfs
+     o: addr=truenas.mckay.one,nfsvers=4,rw
+     device: ":/mnt/McPool/docker/navidrome/maloja-data"
