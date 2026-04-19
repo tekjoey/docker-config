@@ -21,7 +21,7 @@ services:
       - vikunja
   db:
     container_name: vikunja_db
-    image: postgres:18
+    image: paradedb/paradedb:latest
     env_file: .env
     volumes:
       - db:/var/lib/postgresql
