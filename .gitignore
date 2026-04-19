@@ -9,3 +9,6 @@ acme.json
 **/ntfy/config/server.yml
 **/*.dist
 **/config/settings.*
+**/*-nfs/**
+navidrome.yml
+testing/**
