@@ -5,26 +5,28 @@
 
 # The database is the only thing that needs to be backed up at this time.
 # If the extra media/certificat folders are ever used, they will also have to be backed up.
+def run():
 
-import sys
-sys.path.append('/docker/infra')
-import backup_utils as bu
+  import sys
+  sys.path.append('/docker/infra')
+  import backup_utils as bu
 
-file_root = "/docker/authentik/"
-backup_dir = "authentik/"
+  file_root = "/docker/authentik/"
+  backup_dir = "authentik/"
 
-## Backup Database
-cmd = ["docker", "exec", "authentik-postgresql-1", "pg_dump", "-U", "authentik", "authentik"]
+  ## Backup Database
+  cmd = ["docker", "exec", "authentik-postgresql-1", "pg_dump", "-U", "authentik", "authentik"]
 
-bu.db_backup(cmd, backup_dir)
-
-# Delete old files
-bu.delete_older(backup_dir)
-
-# Encrypt .env file
-env_file = f"{file_root}.env"
-enc_file = f"{file_root}encrypted.env"
-
-bu.encrypt_file(env_file, enc_file)
+  bu.db_backup(cmd, "Authentik")
 
 
+  # Delete old files
+  bu.delete_older(backup_dir)
+
+  # Encrypt .env file
+  env_file = f"{file_root}.env"
+  enc_file = f"{file_root}encrypted.env"
+
+  bu.encrypt_file(env_file, enc_file)
+
+run()

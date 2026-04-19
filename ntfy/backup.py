@@ -5,18 +5,21 @@
 
 # This container has all content stored in volumes. No database to backup.
 
-import sys
-sys.path.append('/docker/infra')
-import backup_utils as bu
+def run():
+    import sys
+    sys.path.append('/docker/infra')
+    import backup_utils as bu
 
-file_root = "/docker/ntfy/"
+    file_root = "/docker/ntfy/"
 
-# Encrypt .env file
-env_file = f"{file_root}.env"
-enc_file = f"{file_root}encrypted.env"
-bu.encrypt_file(env_file, enc_file)
+    # Encrypt .env file
+    env_file = f"{file_root}.env"
+    enc_file = f"{file_root}encrypted.env"
+    bu.encrypt_file(env_file, enc_file)
 
-# Encrypt server.yaml file
-env_file = f"{file_root}config/server.yml"
-enc_file = f"{file_root}config/encrypted-server.yml"
-bu.encrypt_file(env_file, enc_file)
+    # Encrypt server.yaml file
+    env_file = f"{file_root}config/server.yml"
+    enc_file = f"{file_root}config/encrypted-server.yml"
+    bu.encrypt_file(env_file, enc_file)
+
+run()
