@@ -12,4 +12,4 @@ def run():
     file_root = "/docker/uptime-kuma/"
 
 
-run()
+#run()

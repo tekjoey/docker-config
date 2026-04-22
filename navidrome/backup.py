@@ -30,4 +30,4 @@ def run():
     bu.encrypt_file(conf_file, enc_conf_file, ct=ct)
 
 
-run()
+#run()

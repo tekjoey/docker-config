@@ -10,4 +10,4 @@ def run():
     file_root = "/docker/dozzel/"
 
 
-run()
+#run()

@@ -15,4 +15,4 @@ def run():
 
     bu.encrypt_file(env_file, enc_file, ct=ct)
 
-run()
+#run()

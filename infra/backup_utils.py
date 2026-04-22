@@ -60,7 +60,7 @@ def db_backup(cmd, ct, root=backup_root):
         log("WARNING", ct, f"DB failed to backup")
 
 def delete_older(ct, days=30, root=backup_root):
-    backup_path = f"{root}{ct}/"
+    backup_path = f"{root}{ct.lower()}/"
     cutoff_time = (now - timedelta(days=days)).timestamp()
     file_list = os.listdir(path=backup_path)
     log("DEBUG", ct, f"Found {len(file_list)} files in {backup_path} older than {days} days")

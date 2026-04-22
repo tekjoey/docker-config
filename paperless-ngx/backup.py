@@ -10,7 +10,7 @@ def run():
     import backup_utils as bu
 
     file_root = "/docker/paperless-ngx/"
-    ct = "Paperless-NGX
+    ct = "Paperless-NGX"
     ## Backup Database
     cmd = ["docker", "exec", "paperless_db", "pg_dump", "-U", "paperless", "paperless"]
 
@@ -25,4 +25,4 @@ def run():
 
     bu.encrypt_file(env_file, enc_file, ct=ct)
 
-run()
+#run()
