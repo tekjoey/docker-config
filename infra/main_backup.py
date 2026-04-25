@@ -1,7 +1,10 @@
-import sys, importlib
+#!/usr/bin/python3
+import sys, importlib, requests
 from pathlib import Path
 sys.path.append('/docker/infra')
 import backup_utils as bu
+
+fail = False
 
 def run_backup(path):
     spec = importlib.util.spec_from_file_location("backup_module", path)
@@ -9,25 +12,19 @@ def run_backup(path):
     spec.loader.exec_module(module)
 
     try:
+        bu.log("DEBUG", "MAIN", f"Beginning {path}")
         module.run()
-        print(f"{path} succeeded")
+        bu.log("INFO", "MAIN", f"{path} succeeded")
     except Exception as e:
-        print(f"{path} failed: {e}")
+        bu.log("ERROR", "MAIN", f"{path} failed: {e}")
+        fail = True
+
+bu.log("INFO", "MAIN", "Beginning backup")
 
 for script in Path("/docker").rglob("backup.py"):
-    print(script)
     run_backup(script)
 
-# import backup_utils as bu
 
+data = f"Backup complete. {'No errors found.' if not fail else 'Errors found.'}"
+bu.log("INFO", "MAIN", data, ntfy=True)
 
-# def test_error(num):
-#     if num > 3:
-#         raise bu.BackupError("Not less than 3", severity="ERROR", container="test")
-# try:
-#     bu.db_backup(["docker", "exec", "authentik-postgresql-1", "pg_dump", "-U", "authentik", "authentik"], "testers/", ct="Test")
-# except bu.BackupError as e:
-#    e.log_error(ntfy=True)
-
-
-# print("\n\n\n----------\nthis runs after the error\n----------\n\n")

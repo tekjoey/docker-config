@@ -17,7 +17,7 @@ now = datetime.now()
 date_format = now.strftime('%Y-%m-%d_%H-%M')
 backup_root = "/docker/infra/ct_backups/"
 
-def log(level, ct, msg):
+def log(level, ct, msg, ntfy=False):
   message = f"{ct} - {msg}"
   match level:
       case "DEBUG":
@@ -26,16 +26,16 @@ def log(level, ct, msg):
           logger.info(message)
       case "WARNING":
           logger.warning(message)
-          notify(level, message)
       case "ERROR":
           logger.error(message)
-          notify(level, message)
       case "CRITICAL":
           logger.critical(message)
-          notify(level, message)
       case "_":
           logger.warning("Unknown level message")
           notify(level, message)
+
+  if ntfy or level in ["WARNING", "ERROR", "CRITICAL"]:
+    notify(level, message)
 
 def notify(level, message, headers={"Tags": "loudspeaker"}):
     ntfy_topic = "https://ntfy.mckay.one/docker-backup-script"
