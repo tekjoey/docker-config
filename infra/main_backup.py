@@ -5,9 +5,6 @@ from pathlib import Path
 import backup_utils as bu
 
 fail = False
-noop = False
-
-testing_paths = [Path("/docker/authentik/backup.py"),Path("/docker/calibre-web/backup.py"),Path("/docker/navidrome/backup.py")]
 
 def run_backup(path):
     spec = importlib.util.spec_from_file_location("backup_module", path)
@@ -22,64 +19,60 @@ def run_backup(path):
         bu.log("ERROR", "MAIN", f"{path} failed: {e}")
         fail = True
 
-def main():
-    if noop:
-        exit()
-    bu.log("INFO", "MAIN", "Beginning backup")
-
-    for script in Path("/docker").rglob("backup.py"):
-        run_backup(script)
-
-    data = f"Backup complete. {'No errors found.' if not fail else 'Errors found.'}"
-    bu.log("INFO", "MAIN", data, ntfy=True)
-
-def testing():
-    if noop:
-        exit()
-    bu.log("INFO", "MAIN", "------BEGIN testing------")
-    bu.log("INFO", "MAIN", "Beginning backup")
-
-
-    for script in pathlist:
-        run_backup(script)
-
-    bu.log("INFO", "MAIN", "------END testing------")
-
-
 def test_backup(args):
-  print(f"test was called. args are {args}")
+  if args.noop:
+    exit()
+
+#  testing_paths = [Path("/docker/dozzel/backup.py")]
+  testing_paths = [Path("/docker/authentik/backup.py"),Path("/docker/calibre-web/backup.py"),Path("/docker/navidrome/backup.py")]
+
+  bu.log("INFO", "MAIN", "------BEGIN testing------")
+  bu.log("INFO", "MAIN", "Beginning backup")
+  for script in testing_paths:
+      run_backup(script)
+  bu.log("INFO", "MAIN", "------END testing------")
+
 
 def full_backup(args):
-  print(f"full was called. args are {args}")
+  if args.noop:
+    exit()
+  bu.log("INFO", "MAIN", "Beginning backup")
+
+  for script in Path("/docker").rglob("backup.py"):
+    run_backup(script)
+
+  data = f"Backup complete. {'No errors found.' if not fail else 'Errors found.'}"
+  bu.log("INFO", "MAIN", data, ntfy=True)
 
 def ct_backup(args):
-  print(f"ct was called. args are {args.container}")
-
+  bu.log("DEBUG", "MAIN", "Subcommand 'ct' was chosen")
+  for ct in args.containers:
+    path = Path(f"/docker/{ct}/backup.py")
+    run_backup(path)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(
                     prog='DockerBackup',
                     description='Backs-up my Docker containers',
                     )
+    parser.add_argument("--debug", action='store_true', help="enable debugging")
+    parser.add_argument("--noop", action="store_true", help="ensure that the main backup function is not called. This is for debugging purposes only")
+
     subparsers = parser.add_subparsers(help='subcommand help')
 
+    # For running the backup scripts against only a few containers.
     testing_parser = subparsers.add_parser('test', help='test help')
     testing_parser.set_defaults(func=test_backup)
 
-
+    # For backing up every container
     full_parser = subparsers.add_parser('full', help='full help')
     full_parser.set_defaults(func=full_backup)
 
-
+    # For backing up select containers
     ct_parser = subparsers.add_parser('ct', help='ct help')
     ct_parser.set_defaults(func=ct_backup)
-    ct_parser.add_argument('container')
+    ct_parser.add_argument('containers', nargs='+')
 
-#    parser.add_argument("-t", "--testing", action='store_true', help="enable testing mode where only a few containers are backed-up")
-#    parser.add_argument("--noop", action="store_true", help="ensure that the main backup function is not called. This is for debugging purposes only")
-#    parser.add_argument("-c", "--container", action='append', help="backup a specific container. Can be called multiple times to backup multiple containers. The name must be identical to their compose folder name")
-#    parser.add_argument('--full', action='store_true', help="not currently used")
-#    parser.add_argument("--debug", action='store_true', help="enable debugging")
     args = parser.parse_args()
     args.func(args)
 
