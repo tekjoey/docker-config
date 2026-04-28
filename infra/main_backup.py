@@ -1,7 +1,6 @@
 #!/usr/bin/python3
-import sys, importlib, requests, argparse
+import requests, argparse
 from pathlib import Path
-#sys.path.append('/docker/infra')
 import backup_utils as bu
 
 fail = False
@@ -12,7 +11,7 @@ def run_backup(path):
     spec.loader.exec_module(module)
 
     try:
-        bu.log("DEBUG", "MAIN", f"Beginning {path}")
+        bu.log("DEBUG", "MAIN", f"Beginning to backup {path}")
         module.run()
         bu.log("INFO", "MAIN", f"{path} succeeded")
     except Exception as e:
@@ -20,11 +19,15 @@ def run_backup(path):
         fail = True
 
 def test_backup(args):
+  bu.log('DEBUG', 'MAIN', f'Main script envoked in testing mode. args are: {args}')
   if args.noop:
     exit()
 
-#  testing_paths = [Path("/docker/dozzel/backup.py")]
-  testing_paths = [Path("/docker/authentik/backup.py"),Path("/docker/calibre-web/backup.py"),Path("/docker/navidrome/backup.py")]
+  testing_paths = [
+	Path("/docker/authentik/backup.py"),
+	Path("/docker/calibre-web/backup.py"),
+	Path("/docker/navidrome/backup.py")
+	]
 
   bu.log("INFO", "MAIN", "------BEGIN testing------")
   bu.log("INFO", "MAIN", "Beginning backup")
@@ -55,10 +58,11 @@ if __name__ == "__main__":
                     prog='DockerBackup',
                     description='Backs-up my Docker containers',
                     )
-    parser.add_argument("--debug", action='store_true', help="enable debugging")
+    parser.add_argument("--debug", action='store_true', default=3, help="enable debugging. Convinience version of -vvvvv")
     parser.add_argument("--noop", action="store_true", help="ensure that the main backup function is not called. This is for debugging purposes only")
+    parser.add_argument('-v', action='count', dest='loglevel', deafult=3, help='Set Log vebosity. -v will only log CRITICAL levels. -vvvvv will log DEBUG')
 
-    subparsers = parser.add_subparsers(help='subcommand help')
+    subparsers = parser.add_subparsers(help='subcommand help', required=True)
 
     # For running the backup scripts against only a few containers.
     testing_parser = subparsers.add_parser('test', help='test help')
@@ -74,32 +78,17 @@ if __name__ == "__main__":
     ct_parser.add_argument('containers', nargs='+')
 
     args = parser.parse_args()
+
+#    bu.logging.setLevel(args.loglevel)
+
+
+    if args.noop:
+      noop = True
+      bu.log('DEBUG', 'MAIN', 'Main script envoked with noop=true')
+
+
+    if args.loglevel != 3:
+      print(args.loglevel)
+      print(60 - (10*args.loglevel))
+
     args.func(args)
-
-    noop = True
-#    print(args)
-
-
-#    if args['noop']:
-#        noop = True
-#    if args['debug']:
-#            bu.logger.setLevel(bu.logging.DEBUG)
-#            bu.log("DEBUG", "MAIN", "Debug enabled")
-#    if args['container']:
-#        noop = True
-#        for ct in args['container']:
-#            run_backup(Path(f"/docker/{ct}/backup.py"))
-#    else:
-#        print('no ct')
-        # for ct in args['container']:
-        #     print(Path(f"/docker/{ct}/backup.py"))
-
-##TODO: This should be altered so main() takes a list of paths to backup.
-## This would simplify things with testing and with the single ct backups
-
-#    if args['testing']:
-        #print("testing") 
-#        testing()
-#    else:
-       #print("not testing")
- #       main()
