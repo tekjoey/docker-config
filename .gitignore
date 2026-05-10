@@ -1,7 +1,7 @@
 **/.env
 infra/ct_backu*/**/
 acme.json
-.log
+**/*.log
 **/log/
 **/logs/
 **/__pycache__/*
