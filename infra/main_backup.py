@@ -60,7 +60,7 @@ if __name__ == "__main__":
                     )
     parser.add_argument("--debug", action='store_true', default=3, help="enable debugging. Convinience version of -vvvvv")
     parser.add_argument("--noop", action="store_true", help="ensure that the main backup function is not called. This is for debugging purposes only")
-    parser.add_argument('-v', action='count', dest='loglevel', deafult=3, help='Set Log vebosity. -v will only log CRITICAL levels. -vvvvv will log DEBUG')
+    parser.add_argument('-v', action='count', dest='loglevel', default=0, help='Set Log vebosity. -v will only log CRITICAL levels. -vvvvv will log DEBUG')
 
     subparsers = parser.add_subparsers(help='subcommand help', required=True)
 
@@ -86,9 +86,13 @@ if __name__ == "__main__":
       noop = True
       bu.log('DEBUG', 'MAIN', 'Main script envoked with noop=true')
 
+    if args.loglevel > 5:
+      bu.logger.setLevel(10)
+    if args.loglevel != 0:
+      loglevelnum = (60 - (10*args.loglevel))
+      print(args.loglevel, "  ", loglevelnum)
+      bu.logger.setLevel(loglevelnum)
+      bu.log("DEBUG", 'MAIN', f"Log level set to {bu.logging.getLevelName(loglevelnum)}." )
 
-    if args.loglevel != 3:
-      print(args.loglevel)
-      print(60 - (10*args.loglevel))
 
     args.func(args)
