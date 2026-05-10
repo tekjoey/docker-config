@@ -19,7 +19,7 @@ services:
       - "traefik.enable=true"
       - "traefik.docker.network=proxy"
       - "traefik.http.routers.photos.entrypoints=websecure"
-      - "traefik.http.routers.photos.rule=Host(`photos.mckay.one`)"
+      - "traefik.http.routers.photos.rule=Host(`photos.mckay.one`) || Host(`immich.mckay.one`)"
       - "traefik.http.routers.photos.tls=true"
       - "traefik.http.routers.photos.tls.certresolver=cf"
     networks:
