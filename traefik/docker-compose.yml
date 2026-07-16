@@ -25,10 +25,13 @@ services:
 #      - "traefik.http.middlewares.auth.basicauth.removeheader=true"
     networks:
       - proxy
+      - monitoring
     restart: unless-stopped
     security_opt:
       - "no-new-privileges:true"
 
 networks:
   proxy:
+    external: true
+  monitoring:
     external: true

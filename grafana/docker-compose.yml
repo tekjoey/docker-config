@@ -1,0 +1,35 @@
+services:
+  grafana:
+    image: grafana/grafana-enterprise
+    container_name: grafana
+    restart: unless-stopped
+    env_file: .env
+    # ports:
+    #   - '2005:3000'
+    volumes:
+      - 'data:/var/lib/grafana'
+    networks:
+      - monitoring
+      - proxy
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.grafana.entrypoints=websecure"
+      - "traefik.http.routers.grafana.rule=Host(`dash.mckay.one`)"
+      - "traefik.http.routers.grafana.tls=true"
+      - "traefik.http.routers.grafana.tls.certresolver=cf"
+      # - "traefik.http.services.nextcloud.loadbalancer.server.port=443"
+      # - "traefik.http.services.nextcloud.loadbalancer.server.scheme=https"
+      - "traefik.docker.network=proxy"
+
+volumes:
+  data:
+    driver_opts:
+      type: nfs
+      o: addr=truenas.mckay.one,nfsvers=4,rw
+      device: ":/mnt/McPool/docker/grafana/data"
+
+networks:
+  monitoring:
+    external: true
+  proxy:
+    external: true

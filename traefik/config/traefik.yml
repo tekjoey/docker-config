@@ -24,6 +24,11 @@ entryPoints:
           scheme: https
   websecure:
     address: ":443/tcp"
+  metrics:
+    address: ":8082"
+
+
+
 #  api:
 #    address" ":8080"
 
@@ -56,4 +61,11 @@ tls:
         - TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305
       minVersion: VersionTLS12
 
-
+metrics:
+  prometheus:
+    entryPoint: metrics
+    buckets:
+      - 0.1
+      - 0.3
+      - 1.2
+      - 5.0
