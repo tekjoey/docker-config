@@ -61,9 +61,49 @@ services:
     networks:
       - immich
 
+  immich-pet-tagger:
+    image: ghcr.io/tedornitier/immich-pet-tagger:cpu
+    container_name: immich-pet-tagger
+    restart: unless-stopped
+    ports:
+      - "3002:8000"
+    environment:
+      - IMMICH_URL=http://immich_server:2283      # name of your Immich container
+     # - IMMICH_API_KEY=6jXmT4UGiSLe0t40LGCrM74zBPFW8umXOuGRQeyJms # Admin account
+      - IMMICH_API_KEY=7KitkETkLQJDM4ohpgHZc60ONr3H2nw8LUoRMUlVU # Josiah account
+      - IMMICH_EXTERNAL_URL=https://photos.mckay.one # how your browser reaches Immich
+      - POLL_INTERVAL=300
+      - GPU_WORKERS=2
+      - THRESHOLD=0.8
+    volumes:
+      - pet-data:/data
+    networks:
+      - immich
+
+
+  immich-pet-tagger-megan:
+    image: ghcr.io/tedornitier/immich-pet-tagger:cpu
+    container_name: immich-pet-tagger-megan
+    restart: unless-stopped
+    ports:
+      - "3003:8000"
+    environment:
+      - IMMICH_URL=http://immich_server:2283      # name of your Immich container
+      - IMMICH_API_KEY=q2bgchqzfueMnfzkDWbHWLUA8vp6Ah3eP2z2bsNgs # Megans account
+      - IMMICH_EXTERNAL_URL=https://photos.mckay.one # how your browser reaches Immich
+      - POLL_INTERVAL=300
+      - GPU_WORKERS=2
+      - THRESHOLD=0.8
+    volumes:
+      - pet-data-megan:/data
+    networks:
+      - immich
+
 volumes:
   pgdata:
   model-cache:
+  pet-data:
+  pet-data-megan:
   data:
     driver_opts:
       type: nfs
