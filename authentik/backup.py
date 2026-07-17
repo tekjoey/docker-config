@@ -12,7 +12,7 @@ def run():
   ct = "Authentik"
 
   ## Backup Database
-  cmd = ["docker", "exec", "authentik-postgresql-1", "pg_dump", "-U", "authentik", "authentik"]
+  cmd = ["docker", "exec", "authentik-db", "pg_dump", "-U", "authentik", "authentik"]
 
   bu.db_backup(cmd, ct)
 

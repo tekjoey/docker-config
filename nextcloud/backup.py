@@ -14,7 +14,7 @@ def run():
 
 
     ## Backup Database
-    cmd = ["docker", "exec", "nextcloud-db-1", "pg_dump", "-U", "nextcloud", "nextcloud"]
+    cmd = ["docker", "exec", "nextcloud-db", "pg_dump", "-U", "nextcloud", "nextcloud"]
 
     bu.db_backup(cmd, "Nextcloud")
 

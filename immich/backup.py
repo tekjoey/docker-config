@@ -11,7 +11,7 @@ def run():
 
 
     ## Backup Database
-    cmd = ["docker", "exec", "immich_postgres", "pg_dump", "-U", "postgres", "immich"]
+    cmd = ["docker", "exec", "immich-db", "pg_dump", "-U", "postgres", "immich"]
 
     bu.db_backup(cmd, ct)
 

@@ -13,7 +13,7 @@ def run():
     ct = "Vikunja"
 
     ## Backup Database
-    cmd = ["docker", "exec", "vikunja_db", "pg_dump", "-U", "vikunja", "vikunja"]
+    cmd = ["docker", "exec", "vikunja-db", "pg_dump", "-U", "vikunja", "vikunja"]
 
     bu.db_backup(cmd, ct)
 

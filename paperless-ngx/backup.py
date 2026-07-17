@@ -12,7 +12,7 @@ def run():
     file_root = "/docker/paperless-ngx/"
     ct = "Paperless-NGX"
     ## Backup Database
-    cmd = ["docker", "exec", "paperless_db", "pg_dump", "-U", "paperless", "paperless"]
+    cmd = ["docker", "exec", "paperlessngx-db", "pg_dump", "-U", "paperless", "paperless"]
 
     bu.db_backup(cmd, ct)
 
