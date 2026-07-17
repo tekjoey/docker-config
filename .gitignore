@@ -12,3 +12,5 @@ acme.json
 **/*-nfs/**
 navidrome.yml
 testing/**
+projects/**
+
