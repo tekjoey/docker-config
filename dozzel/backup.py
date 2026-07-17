@@ -10,4 +10,5 @@ def run():
     file_root = "/docker/dozzel/"
 
 
-#run()
+if __name__ == "__main__":
+    run()

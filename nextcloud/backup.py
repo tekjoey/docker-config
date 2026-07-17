@@ -28,4 +28,5 @@ def run():
 
     bu.encrypt_file(env_file, enc_file)
 
-#run()
+if __name__ == "__main__":
+    run()

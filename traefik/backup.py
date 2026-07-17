@@ -22,4 +22,5 @@ def run():
 
     bu.encrypt_file(acme_file, enc_acme_file, ct=ct)
 
-#run()
+if __name__ == "__main__":
+    run()

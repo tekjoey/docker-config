@@ -3,8 +3,6 @@
 # Purpose: Create a backup for Vikunja
 # Author & Copywright: Josiah McKay / 2026
 
-# This script curently will only backup the database.
-
 def run():
     import backup_utils as bu
 
@@ -27,4 +25,6 @@ def run():
 
     bu.encrypt_file(env_file, enc_file, ct=ct)
 
-#run()
+
+if __name__ == "__main__":
+    run()

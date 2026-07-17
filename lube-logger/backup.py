@@ -31,4 +31,5 @@ def run():
 
     bu.delete_older(ct)
 
-#run()
+if __name__ == "__main__":
+    run()
