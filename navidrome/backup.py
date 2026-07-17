@@ -19,6 +19,8 @@ def run():
     subprocess.run(cmd_prune)
     subprocess.run(cmd_dk_cp)
 
+    bu.delete_older(ct)
+
     # Encrypt .env file
     env_file = f"{file_root}.env"
     enc_file = f"{file_root}encrypted.env"

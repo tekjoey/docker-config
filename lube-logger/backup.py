@@ -29,4 +29,6 @@ def run():
     backup = requests.get(site_root + zip_path)
     bu.write_dated_file(backup.content, backup_root, 'zip', mode='wb', prefix='backup')
 
+    bu.delete_older(ct)
+
 #run()
