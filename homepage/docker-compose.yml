@@ -1,6 +1,6 @@
 services:
-  homepage:
-    container_name: homepage
+  app:
+    container_name: homepage-app
     image: ghcr.io/gethomepage/homepage:v0.9.12
     env_file: .env
 #    ports:

@@ -1,7 +1,7 @@
 ---
 services:
-  calibre-web:
-    container_name: calibre-web
+  app:
+    container_name: calibre_web-app
     image: lscr.io/linuxserver/calibre-web:latest
     env_file: .env
     volumes:

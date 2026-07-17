@@ -1,10 +1,9 @@
 ---
 services:
-  collabora:
-    container_name: collabora
+  app:
+    container_name: collabora-app
     image: docker.io/collabora/code
     env_file: .env
-
     volumes:
       - ./coolwsd.xml:/etc/coolwsd/coolwsd.xml
     labels:

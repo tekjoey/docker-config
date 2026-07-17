@@ -1,9 +1,9 @@
 ---
 services:
-  ct-name:
-    container_name: lubelogger
+  app:
+    container_name: lubelogger-app
     image: ghcr.io/hargata/lubelogger:v1.6.6
-    #env_file: .env
+    env_file: .env
     #environment:
     #  - envar=envar
 #    ports:

@@ -1,7 +1,7 @@
 ---
 services:
-  homebox:
-    container_name: homebox
+  app:
+    container_name: homebox-app
     image: ghcr.io/sysadminsmedia/homebox:0.25.0
     env_file: .env
     volumes:

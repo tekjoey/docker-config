@@ -2,6 +2,7 @@
 services:
   app:
     image: ghcr.io/mealie-recipes/mealie:v3.19.2
+    container_name: mealie-app
     env_file: .env
     volumes:
       - data:/app/data

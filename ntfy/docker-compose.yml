@@ -1,7 +1,7 @@
 ---
 services:
-  ntfy:
-    container_name: ntfy
+  app:
+    container_name: ntfy-app
     image: docker.io/binwiederhier/ntfy
     env_file:
       - .env

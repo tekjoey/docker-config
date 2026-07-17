@@ -1,6 +1,7 @@
 services:
-  navidrome:
+  app:
     image: deluan/navidrome:0.61.2
+    container_name: navidrome-app
     user: 1000:1000 # should be owner of volumes
     restart: unless-stopped
     env_file: .env
@@ -21,7 +22,7 @@ services:
       - "traefik.docker.network=proxy"
 
   feishin:
-    container_name: feishin
+    container_name: navidrome-feishin
     image: 'ghcr.io/jeffvli/feishin:1.12.0'
     restart: unless-stopped
     env_file: .env
@@ -36,8 +37,9 @@ services:
       - "traefik.http.services.feishin.loadbalancer.server.port=9180"
       - "traefik.docker.network=proxy"
 
-  maloja:
+  maloja_josiah:
     image: "krateng/maloja:latest"
+    container_name: navidrome-maloja_j
     ports:
       - "42010:42010"
     volumes:

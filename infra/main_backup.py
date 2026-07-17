@@ -88,6 +88,7 @@ if __name__ == "__main__":
 
     if args.loglevel > 5:
       bu.logger.setLevel(10)
+
     if args.loglevel != 0:
       loglevelnum = (60 - (10*args.loglevel))
       print(args.loglevel, "  ", loglevelnum)

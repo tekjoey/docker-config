@@ -1,21 +1,22 @@
 
 services:
-  prometheus:
+  prometheus-app:
     ports:
         - 9090:9090
     volumes:
         - ./prometheus.yml:/etc/prometheus/prometheus.yml
         - prometheus-data:/prometheus
     image: prom/prometheus
+    container_name: prometheus-app
     networks:
       - monitoring
     command:
       - '--web.enable-admin-api'
       - '--config.file=/etc/prometheus/prometheus.yml'
 
-  cadvisor:
+  cadvisor-app:
     image: ghcr.io/google/cadvisor:0.56.1
-    container_name: cadvisor
+    container_name: cadvisor-app
     privileged: true
     devices:
       - /dev/kmsg:/dev/kmsg
@@ -37,8 +38,9 @@ services:
       - monitoring
 
 
-  pushgateway:
+  pushgateway-app:
     image: prom/pushgateway
+    container_name: pushgateway-app
     ports:
       - 9091:9091
     networks:

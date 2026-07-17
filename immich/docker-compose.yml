@@ -1,7 +1,7 @@
 ---
 services:
-  immich-server:
-    container_name: immich_server
+  app:
+    container_name: immich-app
     image: ghcr.io/immich-app/immich-server:${IMMICH_VERSION:-release}
     volumes:
       - data:/data
@@ -26,8 +26,8 @@ services:
       - immich
       - proxy
 
-  immich-machine-learning:
-    container_name: immich_machine_learning
+  machine_learning:
+    container_name: immich-machine_learning
     image: ghcr.io/immich-app/immich-machine-learning:${IMMICH_VERSION:-release}
     volumes:
       - model-cache:/cache
@@ -38,15 +38,15 @@ services:
       - immich
 
   redis:
-    container_name: immich_redis
+    container_name: immich-redis
     image: redis:6.2-alpine@sha256:80cc8518800438c684a53ed829c621c94afd1087aaeb59b0d4343ed3e7bcf6c5
     restart: always
     # needs volume for /data
     networks:
       - immich
 
-  database:
-    container_name: immich_postgres
+  db:
+    container_name: immich-db
     image: ghcr.io/immich-app/postgres:14-vectorchord0.3.0-pgvectors0.2.0
     env_file:
       - .env
@@ -61,9 +61,9 @@ services:
     networks:
       - immich
 
-  immich-pet-tagger:
+  immich-pet_tagger_josiah:
     image: ghcr.io/tedornitier/immich-pet-tagger:cpu
-    container_name: immich-pet-tagger
+    container_name: immich-pet_tagger_j
     restart: unless-stopped
     ports:
       - "3002:8000"
@@ -79,11 +79,13 @@ services:
       - pet-data:/data
     networks:
       - immich
+    depends_on:
+      - immich-app
 
 
-  immich-pet-tagger-megan:
+  immich-pet_tagger_megan:
     image: ghcr.io/tedornitier/immich-pet-tagger:cpu
-    container_name: immich-pet-tagger-megan
+    container_name: immich-pet_tagger_m
     restart: unless-stopped
     ports:
       - "3003:8000"
@@ -98,6 +100,8 @@ services:
       - pet-data-megan:/data
     networks:
       - immich
+    depends_on:
+      - immich-app
 
 volumes:
   pgdata:

@@ -1,7 +1,7 @@
 ---
 services:
-  traefik:
-    container_name: traefik
+  app:
+    container_name: traefik-app
     image: "docker.io/traefik:latest"
     env_file: .env
     ports:

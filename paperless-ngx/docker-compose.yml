@@ -1,6 +1,6 @@
 services:
-  broker:
-    container_name: paperless_broker
+  redis:
+    container_name: paperlessngx-redis
     image: docker.io/library/redis:7
     volumes:
       - redisdata:/data
@@ -9,7 +9,7 @@ services:
     restart: unless-stopped
 
   db:
-    container_name: paperless_db
+    container_name: paperlessngx-db
     image: docker.io/library/postgres:16
     environment:
       POSTGRES_DB: paperless
@@ -21,8 +21,8 @@ services:
       - paperless
     restart: unless-stopped
 
-  webserver:
-    container_name: paperless_server
+  app:
+    container_name: paperlessngx-app
     image: ghcr.io/paperless-ngx/paperless-ngx:2.16.2
     env_file: .env
     volumes:
@@ -43,12 +43,12 @@ services:
     restart: unless-stopped
     depends_on:
       - db
-      - broker
+      - redis
       - gotenberg
       - tika
 
   gotenberg:
-    container_name: paperless_gotenberg
+    container_name: paperlessngx-gotenberg
     image: docker.io/gotenberg/gotenberg:8.7
     networks:
       - paperless
@@ -61,7 +61,7 @@ services:
       - "--chromium-allow-list=file:///tmp/.*"
 
   tika:
-    container_name: paperless_tika
+    container_name: paperlessngx-tika
     image: docker.io/apache/tika:2.9.2.0
     networks:
       - paperless

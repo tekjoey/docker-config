@@ -1,6 +1,6 @@
 services:
-  vikunja:
-    container_name: vikunja_server
+  app:
+    container_name: vikunja-app
     image: vikunja/vikunja:2.1.0
     env_file: .env
     volumes:
@@ -20,7 +20,7 @@ services:
       - proxy
       - vikunja
   db:
-    container_name: vikunja_db
+    container_name: vikunja-db
     image: paradedb/paradedb:latest
     env_file: .env
     volumes:
