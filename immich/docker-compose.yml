@@ -13,7 +13,7 @@ services:
 #      - 2283:2283
     depends_on:
       - redis
-      - database
+      - db
     restart: always
     labels:
       - "traefik.enable=true"
@@ -80,7 +80,7 @@ services:
     networks:
       - immich
     depends_on:
-      - immich-app
+      - app
 
 
   immich-pet_tagger_megan:
@@ -101,7 +101,7 @@ services:
     networks:
       - immich
     depends_on:
-      - immich-app
+      - app
 
 volumes:
   pgdata:
