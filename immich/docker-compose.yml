@@ -18,10 +18,17 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=proxy"
+
       - "traefik.http.routers.photos.entrypoints=websecure"
       - "traefik.http.routers.photos.rule=Host(`photos.mckay.one`) || Host(`immich.mckay.one`)"
       - "traefik.http.routers.photos.tls=true"
       - "traefik.http.routers.photos.tls.certresolver=cf"
+
+      # - "traefik.http.routers.photos-external.entrypoints=websecure"  
+      # - "traefik.http.routers.photos-external.rule=Host(`drive.mckay.one`) && !ClientIP(`10.0.0.0/8`, `100.64.0.0/10`)"
+      # - "traefik.http.routers.photos-external.tls=true"
+      # - "traefik.http.routers.photos-external.tls.certresolver=cf"
+      # - "traefik.http.routers.photos-external.middlewares=authentik@file"
     networks:
       - immich
       - proxy
