@@ -44,6 +44,14 @@ def full_backup(args):
   for script in Path("/docker").rglob("backup.py"):
     run_backup(script)
 
+  bu.log("DEBUG", "MAIN", "Individual backup scripts complete.")
+
+  if not fail:
+    bu.log("No errors found. Committing to git")
+    bu.git_commit()
+  else:
+    bu.log("Errors found. Skipping git")
+
   data = f"Backup complete. {'No errors found.' if not fail else 'Errors found.'}"
   bu.log("INFO", "MAIN", data, ntfy=True)
 
@@ -95,5 +103,8 @@ if __name__ == "__main__":
       bu.logger.setLevel(loglevelnum)
       bu.log("DEBUG", 'MAIN', f"Log level set to {bu.logging.getLevelName(loglevelnum)}." )
 
+# Add some logic here to test if /docker/infra/ct_backups is properly mounted. Mount it if it isn't
 
     args.func(args)
+
+

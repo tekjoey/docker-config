@@ -95,5 +95,24 @@ def write_dated_file(content, output_path, extention, mode='w', prefix='', root=
     with open(f'{root}{output_path}{prefix}{date_format}.{extention}', mode) as dated_file:
         dated_file.write(content)
         log("INFO", None, f"Finished writing {dated_file.name}")
+
+def git_commit(commit_message="Standard backup commit"):
+    git_cmd = ["git", "add", "*encrypted*"]
+    git_result = subprocess.run(git_cmd, cwd="/docker")
+    log("DEBUG", "MAIN", f"Return code from git add is {git_result.returncode}")
+    
+    if git_result.returncode == 0:
+        log("INFO", "MAIN", f"Git add completed successfully")
+    else:
+        log("WARNING", "MAIN", f"Git add failed. Error Code: {git_result.stderr}")
+
+    git_cmd = ["git", "commit", "-m", f"{commit_message} {date_format}"]
+    git_result = subprocess.run(git_cmd, cwd="/docker")
+    log("DEBUG", "MAIN", f"Return code from git commit is {git_result.returncode}")
+    
+    if git_result.returncode == 0:
+        log("INFO", "MAIN", f"Git commit completed successfully")
+    else:
+        log("WARNING", "MAIN", f"Git commit failed. Error Code: {git_result.stderr}")
         
         
