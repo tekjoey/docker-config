@@ -115,4 +115,7 @@ def git_commit(commit_message="Standard backup commit"):
     else:
         log("WARNING", "MAIN", f"Git commit failed. Error Code: {git_result.stderr}")
         
-        
+def mount_backup_volume():
+    mount_cmd = ["mount", "/docker/infra/ct_backups"]
+    mount_result = subprocess.run(mount_cmd)
+    log("DEBUG", "MAIN", f"Return code from mount command is {mount_result.returncode}")

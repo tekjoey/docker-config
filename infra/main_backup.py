@@ -47,10 +47,10 @@ def full_backup(args):
   bu.log("DEBUG", "MAIN", "Individual backup scripts complete.")
 
   if not fail:
-    bu.log("No errors found. Committing to git")
+    bu.log("DEBUG", "MAIN", "No errors found. Committing to git")
     bu.git_commit()
   else:
-    bu.log("Errors found. Skipping git")
+    bu.log("ERROR", "MAIN", "Errors found in backup. Skipping git")
 
   data = f"Backup complete. {'No errors found.' if not fail else 'Errors found.'}"
   bu.log("INFO", "MAIN", data, ntfy=True)
@@ -103,8 +103,16 @@ if __name__ == "__main__":
       bu.logger.setLevel(loglevelnum)
       bu.log("DEBUG", 'MAIN', f"Log level set to {bu.logging.getLevelName(loglevelnum)}." )
 
-# Add some logic here to test if /docker/infra/ct_backups is properly mounted. Mount it if it isn't
-
+    if Path("/docker/infra/ct_backups/.mounted").is_file():
+      bu.log("DEBUG", "MAIN", "Backup volume is mounted")
+    else:
+      bu.log("WARNING", "MAIN", "Backup volume is not mounted. Attempting to mount it now.")
+      bu.mount_backup_volume()
+      if Path("/docker/infra/ct_backups/.mounted").is_file():
+        bu.log("INFO", "MAIN", "Backup volume was successfully mounted")
+      else:
+        bu.log("ERROR", "MAIN", "Backup volume could not be mounted. Exiting.")
+        exit(1)
     args.func(args)
 
 
