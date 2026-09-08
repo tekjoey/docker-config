@@ -11,9 +11,9 @@ def run():
     ct = "Navidrome"
 
     ## Backup Database
-    cmd_backup = ["docker", "compose", "-f", f"{file_root}docker-compose.yml", "run" , "-d", "-q", "--remove-orphans", "navidrome", "backup", "create"]
-    cmd_prune = ["docker", "compose", "-f", f"{file_root}docker-compose.yml", "run", "-d", "-q", "--remove-orphans", "navidrome", "backup", "prune"]
-    cmd_dk_cp = ["docker", "cp", "navidrome-navidrome-1:/data/backups/", f"{backup_path}"]
+    cmd_backup = ["docker", "compose", "-f", f"{file_root}docker-compose.yml", "run" , "-d", "-q", "--remove-orphans", "app", "backup", "create"]
+    cmd_prune = ["docker", "compose", "-f", f"{file_root}docker-compose.yml", "run", "-d", "-q", "--remove-orphans", "app", "backup", "prune"]
+    cmd_dk_cp = ["docker", "cp", "navidrome-app:/data/backups/", f"{backup_path}"]
 
     subprocess.run(cmd_backup)
     subprocess.run(cmd_prune)
