@@ -47,10 +47,10 @@ def full_backup(args):
   bu.log("DEBUG", "MAIN", "Individual backup scripts complete.")
 
   if not fail:
-    bu.log("DEBUG", "MAIN", "No errors found. Committing to git")
+    bu.log("DEBUG", "MAIN", "No errors found. Committing to git.")
     bu.git_commit()
   else:
-    bu.log("ERROR", "MAIN", "Errors found in backup. Skipping git")
+    bu.log("ERROR", "MAIN", "Errors found in backup. Skipping git commit.")
 
   data = f"Backup complete. {'No errors found.' if not fail else 'Errors found.'}"
   bu.log("INFO", "MAIN", data, ntfy=True)

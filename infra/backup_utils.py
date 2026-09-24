@@ -1,8 +1,9 @@
 import subprocess, os, sys, logging, requests
 from datetime import date, timedelta, datetime
+from logging.handlers import TimedRotatingFileHandler
 
 logger = logging.getLogger(__name__)
-file_h = logging.handlers.TimedRotatingFileHandler("/docker/infra/docker-backup.log", when="D", interval=7, backupCount=8)
+file_h = TimedRotatingFileHandler("/docker/infra/docker-backup.log", when="D", interval=7, backupCount=8)
 console_h = logging.StreamHandler()
 format_str = "%(asctime)s - %(levelname)s: %(message)s"
 logging.basicConfig(
