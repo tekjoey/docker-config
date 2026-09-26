@@ -2,7 +2,7 @@
 services:
   app:
     container_name: ntfy-app
-    image: docker.io/binwiederhier/ntfy
+    image: docker.io/binwiederhier/ntfy:v2.28.0
     env_file:
       - .env
     volumes:

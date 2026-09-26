@@ -1,7 +1,7 @@
 ---
 services:
   app:
-    image: linuxserver/nextcloud:33.0.0
+    image: linuxserver/nextcloud:35.0.0
     container_name: nextcloud-app
     env_file: .env
     volumes:
@@ -15,15 +15,15 @@ services:
       - "traefik.enable=true"
 
       - "traefik.http.routers.nextcloud.entrypoints=websecure"
-      - "traefik.http.routers.nextcloud.rule=Host(`drive.mckay.one`) && (ClientIP(`10.0.0.0/8`) || ClientIP(`100.64.0.0/10`))"
+      - "traefik.http.routers.nextcloud.rule=Host(`drive.mckay.one`)" # && (ClientIP(`10.0.0.0/8`) || ClientIP(`100.64.0.0/10`))"
       - "traefik.http.routers.nextcloud.tls=true"
       - "traefik.http.routers.nextcloud.tls.certresolver=cf"
       - "traefik.http.routers.nextcloud.priority=100"
 
-      - "traefik.http.routers.nextcloud-external.entrypoints=websecure"  
-      - "traefik.http.routers.nextcloud-external.rule=Host(`drive.mckay.one`) && (!ClientIP(`10.0.0.0/8`) || !ClientIP(`100.64.0.0/10`))"
-      - "traefik.http.routers.nextcloud-external.tls.certresolver=cf"
-      - "traefik.http.routers.nextcloud-external.middlewares=authentik@file"
+      # - "traefik.http.routers.nextcloud-external.entrypoints=websecure"  
+      # - "traefik.http.routers.nextcloud-external.rule=Host(`drive.mckay.one`) && (!ClientIP(`10.0.0.0/8`) || !ClientIP(`100.64.0.0/10`))"
+      # - "traefik.http.routers.nextcloud-external.tls.certresolver=cf"
+      # - "traefik.http.routers.nextcloud-external.middlewares=authentik@file"
 
       - "traefik.http.services.nextcloud.loadbalancer.server.port=443"
       - "traefik.http.services.nextcloud.loadbalancer.server.scheme=https"

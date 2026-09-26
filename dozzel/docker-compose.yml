@@ -2,8 +2,8 @@ services:
   app:
     container_name: dozzle-app
     image: docker.io/amir20/dozzle:latest
-#    ports:
-#      - 2001:8080
+    ports:
+      - 2001:8080
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     labels:

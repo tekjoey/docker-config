@@ -2,7 +2,7 @@
 services:
   app:
     container_name: traefik-app
-    image: "docker.io/traefik:latest"
+    image: "docker.io/traefik:v3.7.13"
     env_file: .env
     ports:
       - "80:80"

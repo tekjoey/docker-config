@@ -1,6 +1,6 @@
 services:
   app:
-    image: deluan/navidrome:0.61.2
+    image: deluan/navidrome:0.64.1
     container_name: navidrome-app
     user: 1000:1000 # should be owner of volumes
     restart: unless-stopped
@@ -23,7 +23,7 @@ services:
 
   feishin:
     container_name: navidrome-feishin
-    image: 'ghcr.io/jeffvli/feishin:1.12.0'
+    image: 'ghcr.io/jeffvli/feishin:1.17.0'
     restart: unless-stopped
     env_file: .env
     networks:
